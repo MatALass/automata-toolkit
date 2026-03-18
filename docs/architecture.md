@@ -1,21 +1,41 @@
-# Architecture
-
-## Objective
-
-The project is structured as a small but maintainable software product rather than a single academic script.
-
-## Layers
-
-- `domain/`: core automaton model
-- `parsers/`: text input parsing and DTO normalization
-- `validators/`: integrity and formal property checks
-- `services/`: transformations and recognition logic
-- `renderers/`: console, JSON, and DOT outputs
-- `cli/`: command-line orchestration
+# Architecture Overview
 
 ## Design Principles
 
-1. Separate business logic from input/output.
-2. Keep the CLI thin.
-3. Make every major algorithm independently testable.
-4. Preserve a path toward future extensions such as epsilon transitions, batch processing, and web visualization.
+- Separation of concerns
+- Pure domain model
+- Stateless services
+- Testable components
+
+---
+
+## Layers
+
+### Domain
+Core representation of automata
+
+### Parsers
+Convert external formats → internal model
+
+### Validators
+Ensure automata correctness
+
+### Services
+Algorithms:
+- determinization
+- minimization
+- completion
+- complement
+
+### CLI
+User interaction layer
+
+---
+
+## Flow
+
+Input file
+→ Parser
+→ Validation
+→ Transformations
+→ Output (console / JSON / DOT)

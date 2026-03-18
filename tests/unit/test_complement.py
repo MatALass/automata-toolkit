@@ -13,3 +13,17 @@ def test_complement_inverts_final_states_on_complete_dfa() -> None:
     result = complement(automaton)
 
     assert result.final_states == {"q0"}
+
+def test_complement_twice_returns_original_language():
+    automaton = Automaton(
+        states={"0"},
+        alphabet={"a"},
+        initial_states={"0"},
+        final_states=set(),
+        transitions={("0", "a"): {"0"}},
+    )
+
+    comp1 = complement(automaton)
+    comp2 = complement(comp1)
+
+    assert comp2.final_states == automaton.final_states

@@ -15,3 +15,16 @@ def test_standardize_creates_single_clean_initial_state() -> None:
 
     assert is_standard(result) is True
     assert len(result.initial_states) == 1
+
+def test_standardize_on_already_standard_automaton():
+    automaton = Automaton(
+        states={"0"},
+        alphabet={"a"},
+        initial_states={"0"},
+        final_states={"0"},
+        transitions={("0", "a"): {"0"}},
+    )
+
+    result = standardize(automaton)
+
+    assert result.initial_states == {"0"}

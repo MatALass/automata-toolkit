@@ -1,24 +1,59 @@
-# File Format
+# EFREI Automata Format Specification
 
-## Supported Input Format
+## Structure
 
-```text
-states: q0,q1,q2
-alphabet: a,b
-initial_states: q0
-final_states: q2
-transitions:
-q0,a,q1
-q0,b,q0
-q1,a,q2
-q1,b,q1
-q2,a,q2
-q2,b,q2
-```
+An automaton file is structured as follows:
 
-## Rules
+1. Alphabet size (integer)
+2. Number of states (integer)
+3. Initial states line: "<count> <state1> <state2> ..."
+4. Final states line: "<count> <state1> <state2> ..."
+5. Number of transitions (integer)
+6. Transition lines: "<source><symbol><target>"
 
-- `states`, `alphabet`, `initial_states`, and `final_states` are comma-separated lists.
-- `transitions:` starts a block of transition lines.
-- Each transition line must follow the format `source,symbol,target`.
-- Blank lines and comment lines starting with `#` are ignored.
+---
+
+## Example
+# EFREI Automata Format Specification
+
+## Structure
+
+An automaton file is structured as follows:
+
+1. Alphabet size (integer)
+2. Number of states (integer)
+3. Initial states line: "<count> <state1> <state2> ..."
+4. Final states line: "<count> <state1> <state2> ..."
+5. Number of transitions (integer)
+6. Transition lines: "<source><symbol><target>"
+
+---
+
+## Example
+
+
+3
+5
+1 1
+1 1
+14
+0b1
+0a3
+...
+
+---
+
+## Assumptions
+
+- States are integers: 0 → N-1
+- Alphabet is inferred as: a, b, c, ...
+- No epsilon transitions
+- Determinization assumes finite alphabet
+
+---
+
+## Limitations
+
+- No support for ε-transitions
+- No explicit state naming
+- No metadata support

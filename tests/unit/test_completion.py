@@ -15,3 +15,16 @@ def test_complete_adds_sink_state_for_missing_transitions() -> None:
 
     assert is_complete(result) is True
     assert any(state.startswith("P") for state in result.states)
+
+def test_complete_does_not_modify_complete_automaton():
+    automaton = Automaton(
+        states={"0"},
+        alphabet={"a"},
+        initial_states={"0"},
+        final_states={"0"},
+        transitions={("0", "a"): {"0"}},
+    )
+
+    result = complete(automaton)
+
+    assert result.states == automaton.states
