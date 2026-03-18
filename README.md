@@ -79,7 +79,7 @@ Properties:
 Input → EFREI file  
 Output → CLI + Graph
 
-![Graph](assets/screenshots/automaton.png)
+![Graph](assets/screenshots/graph.png)
 ![CLI](assets/screenshots/cli-output.png)
 
 ---
