@@ -1,0 +1,8 @@
+{
+  "sample_automaton.txt": {
+    "a": false,
+    "aa": true,
+    "aab": true,
+    "b": false
+  }
+}

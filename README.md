@@ -1,58 +1,63 @@
 # Automata Toolkit
 
-A Python toolkit for reading, validating, transforming, and testing finite automata from text-based definitions.
+A Python toolkit for parsing, validating, transforming, and testing finite automata from text-based definitions.
 
 ## Project Overview
 
-Automata Toolkit is a command-line application designed to manipulate finite automata from a simple input format. It supports core operations from automata theory such as standardization, determinism checks, completion, complement construction, and word recognition.
+Automata Toolkit is a command-line application designed to manipulate finite automata from a simple text input format. It supports key automata-theory operations such as property validation, standardization, completion, complement construction, word recognition, and deterministic minimization.
 
-The project was originally inspired by an academic formal-languages assignment and has been redesigned as a clean, testable software-engineering project focused on algorithmic correctness, reproducibility, and maintainability.
+The project started from an academic formal-languages assignment and is restructured here as a clean software-engineering project focused on algorithmic correctness, maintainability, reproducibility, and portfolio quality.
 
 ## Problem Statement
 
-Finite automata exercises are often solved manually or with ad hoc scripts that are hard to verify, extend, or demonstrate. This project provides a structured engine to:
+Finite automata exercises are often solved manually or through monolithic scripts that are hard to verify, extend, test, or demonstrate. This project provides a structured engine that can:
 
-- load automata from text files,
+- ingest automata definitions from text files,
 - validate structural properties,
 - apply formal transformations,
-- test word recognition,
-- produce readable transition tables and visual exports.
+- test input words,
+- generate readable console output,
+- export JSON and Graphviz-compatible DOT representations.
 
 ## Features
 
-- Load automata from `.txt` files
-- Display states, alphabet, initial/final states, and transition tables
+- Parse automata from `.txt` files
+- Validate automaton integrity
 - Check whether an automaton is:
-  - standard
-  - deterministic
+  - standard,
+  - deterministic,
   - complete
-- Standardize a non-standard automaton
-- Determinize and complete a non-deterministic automaton
-- Minimize a deterministic complete automaton
-- Recognize user-provided words
+- Standardize an automaton
+- Determinize an automaton
+- Complete an automaton with a sink state
 - Build the complementary automaton
-- Export automata to Graphviz / JSON
-- Run automated tests on reference automata
+- Minimize a deterministic complete automaton
+- Recognize words from the automaton language
+- Export to JSON
+- Export to DOT / Graphviz format
+- Run automated tests on the parser, validators, transformations, recognition logic, and CLI workflows
 
 ## Tech Stack
 
-- **Python**
-- **pytest** for testing
-- **Typer** or **argparse** for CLI
-- **Graphviz** for diagram export
+- **Python 3.10+**
+- **argparse** for the CLI
+- **pytest** for automated testing
 - **GitHub Actions** for CI
+- **DOT / Graphviz** export for diagrams
 
 ## Architecture
 
-The codebase is organized into five layers:
+```text
+src/automata_toolkit/
+├── domain/        # core automaton model
+├── parsers/       # file parsing and DTOs
+├── validators/    # formal property and integrity checks
+├── services/      # transformations and recognition logic
+├── renderers/     # console / JSON / DOT outputs
+└── cli/           # command-line entrypoint
+```
 
-- `domain/` → automaton model and core entities
-- `parsers/` → input file parsing
-- `validators/` → property checks
-- `services/` → automata transformations
-- `renderers/` → console, JSON, and graph exports
-
-This separation keeps the project easier to test, maintain, and extend.
+This separation keeps the project easier to test, document, and extend.
 
 ## Installation
 
@@ -62,108 +67,116 @@ cd automata-toolkit
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .[dev]
-Usage
-Run the CLI
-python -m automata_toolkit.cli.main
-Example workflow
-python -m automata_toolkit.cli.main \
-  --input data/raw/efrei_test_cases/BDX4-08.txt \
-  --check-all \
+```
+
+## Input File Format
+
+Example:
+
+```text
+states: q0,q1,q2
+alphabet: a,b
+initial_states: q0
+final_states: q2
+transitions:
+q0,a,q1
+q0,b,q0
+q1,a,q2
+q1,b,q1
+q2,a,q2
+q2,b,q2
+```
+
+## Usage
+
+### Run the CLI
+
+```bash
+automata-cli --input data/raw/efrei_test_cases/sample_automaton.txt --check-all
+```
+
+### Determinize and export to DOT
+
+```bash
+automata-cli \
+  --input data/raw/efrei_test_cases/sample_automaton.txt \
   --determinize \
   --complete \
-  --recognize aab
-Example output
-Automaton loaded successfully
-States: [0, 1, 2, 3]
-Alphabet: [a, b]
-Initial states: [0]
-Final states: [3]
+  --export-dot assets/diagrams/sample.dot
+```
 
-Properties:
-- Standard: No
-- Deterministic: No
-- Complete: No
+### Recognize a word
 
-Actions performed:
-- Standardization: applied
-- Determinization: applied
-- Completion: applied
+```bash
+automata-cli \
+  --input data/raw/efrei_test_cases/sample_automaton.txt \
+  --word aab
+```
 
-Word recognition:
+## Example Output / Results
+
+```text
+Automaton loaded successfully.
+
+States: q0, q1, q2
+Alphabet: a, b
+Initial states: q0
+Final states: q2
+
+Properties
+- Integrity: valid
+- Standard: yes
+- Deterministic: yes
+- Complete: yes
+
+Word recognition
 - aab -> accepted
-Example Results
+```
 
-The toolkit can be used to:
+## Screenshots
 
-validate a full batch of reference automata,
+Suggested screenshots to add in `assets/screenshots/`:
 
-compare original and transformed versions,
+1. **CLI overview**
+   - Load an automaton and print its transition table.
+2. **Property checks**
+   - Show integrity, standardness, determinism, and completeness results.
+3. **Transformation result**
+   - Compare original automaton vs determinized / completed / minimized version.
+4. **DOT / graph export**
+   - Render the transformed automaton visually.
+5. **CI proof**
+   - Show a successful GitHub Actions pipeline.
 
-generate deterministic and minimized forms,
+## Project Structure
 
-document algorithm behavior for teaching or demonstrations.
+```text
+automata-toolkit/
+├── src/
+├── data/
+├── tests/
+├── docs/
+├── assets/
+└── scripts/
+```
 
-Screenshots
-Suggested screenshots to add
+## Future Improvements
 
-CLI overview
+- Add epsilon-transition support
+- Add batch processing for all EFREI test cases
+- Add HTML report generation for before/after comparisons
+- Add performance benchmarks for determinization and minimization
+- Add richer validation diagnostics with line-level parser errors
+- Add a small educational web UI for visualization
 
-Load an automaton and print its transition table
-
-Property checks
-
-Show standard / deterministic / complete results
-
-Transformation result
-
-Show original automaton vs determinized/complete version
-
-Graph export
-
-Render the transformed automaton as a diagram
-
-Test report
-
-Show passing unit tests and integration tests
-
-Project Structure
-src/automata_toolkit/
-data/raw/efrei_test_cases/
-tests/
-docs/
-assets/
-Future Improvements
-
-Add epsilon-transition support with explicit closure computation
-
-Add batch processing for all test automata
-
-Add JSON schema validation for input/output formats
-
-Add web UI for educational visualization
-
-Add complexity analysis and performance benchmarks
-
-Add export of minimization steps and partition evolution
-
-Limitations
-
-The current implementation targets educational finite automata workflows
-
-Input format is constrained to the project specification
-
-Advanced regex conversion features are not yet included
-
-Why this project matters
+## Why This Project Matters
 
 This repository demonstrates:
 
-algorithm implementation,
+- algorithm implementation,
+- clean CLI software design,
+- parser and transformation architecture,
+- automated testing,
+- reproducible engineering practices.
 
-CLI software design,
-
-parser + transformation architecture,
-
-test-driven validation of formal systems.
-
-It is intended as a strong software-engineering complement to a portfolio centered on data, BI, and analytics projects.
+It is intended as a strong software-engineering complement to a portfolio centered on Data / BI / Analytics Engineering projects.

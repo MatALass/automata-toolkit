@@ -1,0 +1,21 @@
+from automata_toolkit.domain.automaton import Automaton
+from automata_toolkit.services.recognition import recognize_word
+
+
+def test_recognize_word_accepts_expected_word() -> None:
+    automaton = Automaton(
+        states={"q0", "q1", "q2"},
+        alphabet={"a", "b"},
+        initial_states={"q0"},
+        final_states={"q2"},
+        transitions={
+            ("q0", "a"): {"q1"},
+            ("q0", "b"): {"q0"},
+            ("q1", "a"): {"q2"},
+            ("q1", "b"): {"q1"},
+            ("q2", "a"): {"q2"},
+            ("q2", "b"): {"q2"},
+        },
+    )
+    assert recognize_word(automaton, "aa") is True
+    assert recognize_word(automaton, "b") is False
